@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>iot_box</name>
+	<name>iot_simple_button</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -24,4 +24,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>rfm69-driver</name>
+			<type>2</type>
+			<location>/home/pawwik/dev/rfm69-driver</location>
+		</link>
+	</linkedResources>
 </projectDescription>
