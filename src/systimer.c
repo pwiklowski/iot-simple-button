@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <stdint-gcc.h>
 #include "systimer.h"
+
+#ifdef STM32F030
 #include "stm32f0xx_misc.h"
+#endif
 
 volatile uint32_t uptime_ms = 0;
 
