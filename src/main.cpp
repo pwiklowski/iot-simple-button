@@ -52,11 +52,24 @@ typedef enum{
 }OcfDeviceType;
 
 
+volatile uint32_t last_click_time=0;
+Rfm69 rfm69;
+uint8_t packet[6] = {0,0,0,1,OIC_R_SWITCH_BINARY,1};
+
+void sendPressEvent(){
+	uint8_t status;
+
+	int16_t len = rfm69.send(packet,6,0);
+	rfm69.sleep();
+}
+
 extern "C" {
 void EXTI0_1_IRQHandler(void)
 {
     if(EXTI_GetITStatus(EXTI_Line0) != RESET)
     {
+        sendPressEvent();
+
 
 
         EXTI_ClearITPendingBit(EXTI_Line0);
@@ -65,10 +78,12 @@ void EXTI0_1_IRQHandler(void)
 }
 
 
+
 int main() {
+
+
 	init();
 
-	Rfm69 rfm69;
 	rfm69.reset();
 
 	if (!rfm69.init()){
@@ -79,20 +94,15 @@ int main() {
 	rfm69.setPowerDBm(10); // +10 dBm
 	rfm69.setMode(RFM69_MODE_RX);
 	rfm69.waitForModeReady();
+	rfm69.sleep();
 
-	uint8_t packet[6] = {0,1,2,3,OIC_R_SWITCH_BINARY,1};
+
+
+	uint8_t packet[6] = {0,0,0,1,OIC_R_SWITCH_BINARY,1};
 	uint8_t status;
 
 	while(1){
-		status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
-		if (status)
-		{
-			delay_ms(80);
-			status = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
-			if (status){
-				int16_t len = rfm69.send(packet,6,0);
-			}
-		}
+		PWR_EnterSTANDBYMode();
 	}
 
 	return 0;
