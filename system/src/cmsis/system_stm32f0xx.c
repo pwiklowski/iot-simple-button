@@ -158,6 +158,8 @@ static void SetSysClock(void);
   */
 void SystemInit (void)
 {    
+
+	return;
   /* Set HSION bit */
   RCC->CR |= (uint32_t)0x00000001;
 
