@@ -12,6 +12,9 @@ extern "C" {
 }
 
 void init() {
+	EXTI_InitTypeDef EXTI_InitStructure;
+	NVIC_InitTypeDef   NVIC_InitStructure;
+
 	mstimer_init();
 
 	RCC_AHBPeriphClockCmd(RCC_AHBENR_GPIOAEN, ENABLE);
@@ -22,6 +25,23 @@ void init() {
 	gpioStructureButton.GPIO_PuPd = GPIO_PuPd_DOWN;
 	gpioStructureButton.GPIO_OType = GPIO_OType_PP;
 	GPIO_Init(GPIOA, &gpioStructureButton);
+
+
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+	SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource0);
+
+	EXTI_InitStructure.EXTI_Line = EXTI_Line0;
+	EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+	EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising_Falling;
+	EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+	EXTI_Init(&EXTI_InitStructure);
+
+	NVIC_InitStructure.NVIC_IRQChannel = EXTI0_1_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannelPriority = 0x00;
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+	NVIC_Init(&NVIC_InitStructure);
+
+
 }
 
 
@@ -30,6 +50,19 @@ typedef enum{
 
 
 }OcfDeviceType;
+
+
+extern "C" {
+void EXTI0_1_IRQHandler(void)
+{
+    if(EXTI_GetITStatus(EXTI_Line0) != RESET)
+    {
+
+
+        EXTI_ClearITPendingBit(EXTI_Line0);
+    }
+}
+}
 
 
 int main() {
