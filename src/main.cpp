@@ -17,6 +17,8 @@ void init() {
 
 	mstimer_init();
 
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_PWR, ENABLE);
+
 	RCC_AHBPeriphClockCmd(RCC_AHBENR_GPIOAEN, ENABLE);
 	GPIO_InitTypeDef gpioStructureButton;
 	gpioStructureButton.GPIO_Pin = GPIO_Pin_0;
