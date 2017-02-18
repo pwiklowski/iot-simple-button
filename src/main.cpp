@@ -88,9 +88,8 @@ int main() {
 	PWR_WakeUpPinCmd(PWR_WakeUpPin_1, ENABLE);
 
 	rfm69.reset();
-
-	if (!rfm69.init()){
-		delay_ms(200);
+	while (!rfm69.init()){
+		rfm69.reset();
 	}
 	rfm69.setPowerDBm(10); // +10 dBm
 	sendPressEvent();
