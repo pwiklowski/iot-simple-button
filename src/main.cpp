@@ -85,27 +85,20 @@ int main() {
 
 
 	init();
+	PWR_WakeUpPinCmd(PWR_WakeUpPin_1, ENABLE);
 
 	rfm69.reset();
 
 	if (!rfm69.init()){
 		delay_ms(200);
 	}
-
-	rfm69.sleep();
 	rfm69.setPowerDBm(10); // +10 dBm
-	rfm69.setMode(RFM69_MODE_RX);
-	rfm69.waitForModeReady();
+	sendPressEvent();
 	rfm69.sleep();
+	//delay_ms(6000);
 
-
-
-	uint8_t packet[6] = {0,0,0,1,OIC_R_SWITCH_BINARY,1};
-	uint8_t status;
-
-	while(1){
-		PWR_EnterSTANDBYMode();
-	}
+	PWR_EnterSTANDBYMode();
+	while(1);
 
 	return 0;
 }
